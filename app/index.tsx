@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
 export default function Index() {
+  const [results, setResults] = useState<any>([]);
+
   useEffect(() => {
     console.log("Entre en pantalla");
     getPokemons();
@@ -12,11 +14,16 @@ export default function Index() {
     const response = await fetch(URL, {
       method: "GET",
     });
-    console.log(response);
+    const data = await response.json();
+    setResults(data.results);
+    console.log(data);
   };
+
   return (
     <View>
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      {results.map((pokemon: { name: any }) => (
+        <Text key={pokemon.name}>{pokemon.name}</Text>
+      ))}
     </View>
   );
 }
